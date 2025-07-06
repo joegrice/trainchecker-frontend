@@ -26,7 +26,7 @@ To get the project up and running on your local machine, follow these steps:
 3.  **Configure API Base URL:**
     Create a `.env` file in the `trainchecker-frontend` directory (at the same level as `package.json`). Add your TrainChecker API base URL to this file:
     ```
-    VITE_TRACK_TRACKER_API_BASE_URL=http://localhost:5000
+    TRAIN_CHECKER_API_BASE_URL=http://localhost:5000
     ```
     *Replace `http://localhost:5000` with the actual URL of your backend API.*
 

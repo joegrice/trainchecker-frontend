@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  trainchecker-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    env_file:
+      - .env
+    # If your frontend needs to communicate with a backend service within the same Docker Compose network,
+    # you can add a dependency here. For example:
+    # depends_on:
+    #   - your-backend-service-name
