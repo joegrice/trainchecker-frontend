@@ -1,69 +1,52 @@
-# React + TypeScript + Vite
+# TrainChecker Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a responsive front-end application built with React and Tailwind CSS, utilizing Material-Tailwind components. It interacts with the TrainChecker API to allow users to input origin and destination codes and display the returned train service information.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+*   **User-Friendly Interface:** Clean and modern design using Material-Tailwind components.
+*   **API Interaction:** Input fields for origin and destination codes to query the TrainChecker API.
+*   **Responsive Design:** Adapts to various screen sizes using Tailwind CSS.
+*   **Error Handling:** Displays clear error messages for API call failures or invalid input.
 
-## Expanding the ESLint configuration
+## Setup and Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+To get the project up and running on your local machine, follow these steps:
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1.  **Navigate to the project directory:**
+    ```bash
+    cd trainchecker-frontend
+    ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+3.  **Configure API Base URL:**
+    Create a `.env` file in the `trainchecker-frontend` directory (at the same level as `package.json`). Add your TrainChecker API base URL to this file:
+    ```
+    VITE_TRACK_TRACKER_API_BASE_URL=http://localhost:5000
+    ```
+    *Replace `http://localhost:5000` with the actual URL of your backend API.*
+
+## Running the Application
+
+To start the development server:
+
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The application will typically be accessible at `http://localhost:5173` in your web browser.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## VS Code Debugging
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+This project is configured for debugging in VS Code. To start debugging:
+
+1.  Open the project in VS Code.
+2.  Go to the "Run and Debug" view (Ctrl+Shift+D or Cmd+Shift+D).
+3.  Select the "Launch Chrome against localhost" configuration.
+4.  Click the green play button.
+
+This will automatically start the development server (`npm run dev`) and launch Chrome with the debugger attached.

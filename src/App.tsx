@@ -1,15 +1,36 @@
 import { useState } from 'react';
-import { Input, Button, Typography } from "@material-tailwind/react";
+import { Input, Button, Typography, Card, CardBody } from "@material-tailwind/react";
+
+interface Location {
+  locationName: string;
+  crs: string;
+}
+
+interface TrainService {
+  origin: Location[];
+  destination: Location[];
+  std: string;
+  etd: string;
+  platform?: string | null;
+  operator: string;
+}
+
+interface ApiResponse {
+  locationName: string;
+  filterLocationName: string;
+  trainServices: TrainService[];
+  crs: string;
+}
 
 function App() {
   const [originCode, setOriginCode] = useState('');
   const [destinationCode, setDestinationCode] = useState('');
-  const [response, setResponse] = useState('');
+  const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
   const [error, setError] = useState('');
 
   const handleApiCall = async () => {
     setError('');
-    setResponse('');
+    setApiResponse(null);
 
     if (!originCode || !destinationCode) {
       setError('Please enter both Origin and Destination codes.');
@@ -33,7 +54,11 @@ function App() {
         throw new Error(data.message || 'Something went wrong');
       }
 
-      setResponse(JSON.stringify(data, null, 2));
+      // Debug logging to see what we're actually getting
+      console.log('API Response:', data);
+      console.log('Train Services:', data.trainServices);
+
+      setApiResponse(data);
     } catch (err: any) {
       setError(err.message);
     }
@@ -49,7 +74,7 @@ function App() {
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
         >
-          TrainChecker API Client
+          Train Checker
         </Typography>
 
         <div className="space-y-4 mb-6">
@@ -85,24 +110,125 @@ function App() {
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            Make API Call
+            Search
           </Button>
         </div>
 
-        {response && (
-          <div className="mt-6 p-4 bg-blue-gray-50 rounded-lg">
-            <Typography variant="h6" color="blue-gray" className="mb-2"
+        {apiResponse && (
+          <div className="mt-6">
+            <Typography variant="h6" color="blue-gray" className="mb-4"
               placeholder={undefined}
               onResize={undefined}
               onResizeCapture={undefined}
               onPointerEnterCapture={undefined}
               onPointerLeaveCapture={undefined}
             >
-              Response:
+              Train Services from {apiResponse.locationName} to {apiResponse.filterLocationName}:
             </Typography>
-            <pre className="bg-gray-800 text-white p-4 rounded-md overflow-auto text-sm">
-              <code>{response}</code>
-            </pre>
+            <div className="space-y-3">
+              {apiResponse.trainServices.map((service, index) => (
+                <Card key={index} className="shadow-sm"
+                  placeholder={undefined}
+                  onResize={undefined}
+                  onResizeCapture={undefined}
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                >
+                  <CardBody className="p-4"
+                    placeholder={undefined}
+                    onResize={undefined}
+                    onResizeCapture={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <Typography variant="h6" color="blue-gray"
+                        placeholder={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                      >
+                        {service.operator}
+                      </Typography>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        service.etd === 'On time' ? 'bg-green-100 text-green-800' :
+                        service.etd === 'Delayed' ? 'bg-red-100 text-red-800' :
+                        service.etd.includes('Cancelled') ? 'bg-red-100 text-red-800' :
+                        'bg-blue-100 text-blue-800'
+                      }`}>
+                        {service.etd}
+                      </span>
+                    </div>
+                    
+                    <div className="mb-3">
+                      <Typography variant="small" color="gray" className="font-medium mb-1"
+                        placeholder={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                      >
+                        Route
+                      </Typography>
+                      <Typography color="blue-gray"
+                        placeholder={undefined}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                      >
+                        {service.origin[0].locationName} ({service.origin[0].crs}) → {service.destination[0].locationName} ({service.destination[0].crs})
+                      </Typography>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <Typography variant="small" color="gray" className="font-medium"
+                          placeholder={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        >
+                          Scheduled Departure
+                        </Typography>
+                        <Typography color="blue-gray"
+                          placeholder={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        >
+                          {service.std}
+                          {service.platform && ` (Platform ${service.platform})`}
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography variant="small" color="gray" className="font-medium"
+                          placeholder={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        >
+                          Expected Departure
+                        </Typography>
+                        <Typography color="blue-gray"
+                          placeholder={undefined}
+                          onResize={undefined}
+                          onResizeCapture={undefined}
+                          onPointerEnterCapture={undefined}
+                          onPointerLeaveCapture={undefined}
+                        >
+                          {service.etd}
+                        </Typography>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+              ))}
+            </div>
           </div>
         )}
 
