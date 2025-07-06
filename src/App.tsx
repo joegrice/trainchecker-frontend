@@ -58,9 +58,15 @@ function App() {
       console.log('API Response:', data);
       console.log('Train Services:', data.trainServices);
 
-      setApiResponse(data);
+      if (data.trainServices && data.trainServices.length > 0) {
+        setApiResponse(data);
+      } else {
+        setError('No train services found for the given route');
+        setApiResponse(null); // Clear previous results
+      }
     } catch (err: any) {
-      setError(err.message);
+      setError(`Failed to fetch train services: ${err.message}`);
+      setApiResponse(null); // Clear previous results on error
     }
   };
 
@@ -114,7 +120,7 @@ function App() {
           </Button>
         </div>
 
-        {apiResponse && (
+        {apiResponse && apiResponse.trainServices.length > 0 && (
           <div className="mt-6">
             <Typography variant="h6" color="blue-gray" className="mb-4"
               placeholder={undefined}
@@ -232,8 +238,15 @@ function App() {
           </div>
         )}
 
+        {apiResponse && apiResponse.trainServices.length === 0 && (
+          <div className="mt-6 bg-yellow-50 border border-yellow-400 text-yellow-700 px-4 py-3 rounded-lg relative" role="alert">
+            <strong className="font-bold">Warning:</strong>
+            <span className="block sm:inline"> No train services found for the given route.</span>
+          </div>
+        )}
+
         {error && (
-          <div className="mt-6 bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
+          <div className="mt-6 bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative text-center" role="alert">
             <strong className="font-bold">Error:</strong>
             <span className="block sm:inline"> {error}</span>
           </div>
