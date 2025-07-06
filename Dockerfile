@@ -3,6 +3,12 @@ FROM node:20-alpine as builder
 
 WORKDIR /app
 
+# Declare build argument for the API base URL
+ARG VITE_TRAIN_CHECKER_API_BASE_URL
+
+# Set environment variable for Vite during build
+ENV VITE_TRAIN_CHECKER_API_BASE_URL=${VITE_TRAIN_CHECKER_API_BASE_URL}
+
 COPY package.json package-lock.json ./
 RUN npm install
 
