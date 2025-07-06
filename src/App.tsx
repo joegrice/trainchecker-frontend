@@ -38,7 +38,7 @@ function App() {
     }
 
     try {
-      const url = `${import.meta.env.TRAIN_CHECKER_API_BASE_URL}/api/v1/trains/${originCode}/to/${destinationCode}`;
+      const url = `${import.meta.env.VITE_TRAIN_CHECKER_API_BASE_URL}/api/v1/trains/${originCode}/to/${destinationCode}`;
       
       const options: RequestInit = {
         method: 'GET',

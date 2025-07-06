@@ -3,10 +3,12 @@ version: '3.8'
 services:
   trainchecker-frontend:
     build:
-      context: .
+      context: ../trainchecker-frontend
       dockerfile: Dockerfile
+    container_name: trainchecker-frontend
+    restart: unless-stopped
     ports:
-      - "80:80"
+      - "90:80"
     env_file:
       - .env
     # If your frontend needs to communicate with a backend service within the same Docker Compose network,
