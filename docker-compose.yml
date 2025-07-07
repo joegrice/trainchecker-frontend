@@ -5,17 +5,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        NODE_ENV: production
-        VITE_TRAIN_CHECKER_API_BASE_URL: ${VITE_TRAIN_CHECKER_API_BASE_URL}
     container_name: trainchecker-frontend
     restart: unless-stopped
     environment:
       - TZ=Europe/London
     ports:
       - "90:80"
-    env_file:
-      - .env
     # If your frontend needs to communicate with a backend service within the same Docker Compose network,
     # you can add a dependency here. For example:
     # depends_on:

@@ -3,20 +3,11 @@ FROM node:20-alpine as builder
 
 WORKDIR /app
 
-# Declare build arguments
-ARG NODE_ENV=production
-ARG VITE_TRAIN_CHECKER_API_BASE_URL
-
-# Set environment variables for Vite during build
-ENV NODE_ENV=${NODE_ENV}
-ENV VITE_TRAIN_CHECKER_API_BASE_URL=${VITE_TRAIN_CHECKER_API_BASE_URL}
-
-# Debug: Print environment variables to verify they're set
-RUN echo "NODE_ENV: $NODE_ENV"
-RUN echo "VITE_TRAIN_CHECKER_API_BASE_URL: $VITE_TRAIN_CHECKER_API_BASE_URL"
+# Set NODE_ENV for production build
+ENV NODE_ENV=production
 
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci --include=dev
 
 COPY . .
 RUN npm run build
