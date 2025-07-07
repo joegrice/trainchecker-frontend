@@ -15,7 +15,7 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 COPY . .
-RUN NODE_ENV=${NODE_ENV} VITE_TRAIN_CHECKER_API_BASE_URL=${VITE_TRAIN_CHECKER_API_BASE_URL} npm run build
+RUN npm run build
 
 # Stage 2: Serve the application with Nginx
 FROM nginx:alpine
