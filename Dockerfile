@@ -3,17 +3,19 @@ FROM node:20-alpine as builder
 
 WORKDIR /app
 
-# Declare build argument for the API base URL
+# Declare build arguments
+ARG NODE_ENV=production
 ARG VITE_TRAIN_CHECKER_API_BASE_URL
 
-# Set environment variable for Vite during build
+# Set environment variables for Vite during build
+ENV NODE_ENV=${NODE_ENV}
 ENV VITE_TRAIN_CHECKER_API_BASE_URL=${VITE_TRAIN_CHECKER_API_BASE_URL}
 
 COPY package.json package-lock.json ./
 RUN npm install
 
 COPY . .
-RUN npm run build
+RUN NODE_ENV=${NODE_ENV} VITE_TRAIN_CHECKER_API_BASE_URL=${VITE_TRAIN_CHECKER_API_BASE_URL} npm run build
 
 # Stage 2: Serve the application with Nginx
 FROM nginx:alpine

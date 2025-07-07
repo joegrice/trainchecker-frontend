@@ -6,9 +6,12 @@ services:
       context: ../trainchecker-frontend
       dockerfile: Dockerfile
       args:
+        NODE_ENV: production
         VITE_TRAIN_CHECKER_API_BASE_URL: ${VITE_TRAIN_CHECKER_API_BASE_URL}
     container_name: trainchecker-frontend
     restart: unless-stopped
+    environment:
+      - TZ=Europe/London
     ports:
       - "90:80"
     env_file:
