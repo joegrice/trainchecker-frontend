@@ -3,11 +3,8 @@ FROM node:20-alpine as builder
 
 WORKDIR /app
 
-# Set NODE_ENV for production build
-ENV NODE_ENV=production
-
 COPY package.json package-lock.json ./
-RUN npm ci --include=dev
+RUN npm install
 
 COPY . .
 RUN npm run build
