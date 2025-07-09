@@ -1,4 +1,3 @@
-
 import { useAuth } from "../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -9,6 +8,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const handleLogin = async () => {
     try {
@@ -32,10 +32,33 @@ export default function LoginPage() {
     }
   };
 
+  const handleRegister = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_TRAIN_CHECKER_API_BASE_URL}/api/v1/Auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        alert("Registration successful! Please log in.");
+        setIsRegistering(false);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Registration failed.");
+      }
+    } catch (error) {
+      setError("An error occurred during registration. Please try again later.");
+    }
+  };
+
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="w-full max-w-xs">
-        <form className="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md" onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
+        <form className="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md" onSubmit={(e) => { e.preventDefault(); isRegistering ? handleRegister() : handleLogin(); }}>
+          <h2 className="text-center text-2xl font-bold mb-6">{isRegistering ? "Register" : "Login"}</h2>
           <div className="mb-4">
             <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="email">
               Email
@@ -64,7 +87,12 @@ export default function LoginPage() {
           </div>
           <div className="flex justify-center">
             <button className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="submit">
-              Sign In
+              {isRegistering ? "Register" : "Sign In"}
+            </button>
+          </div>
+          <div className="mt-4 text-center">
+            <button type="button" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" onClick={() => setIsRegistering(!isRegistering)}>
+              {isRegistering ? "Already have an account? Login" : "Don't have an account? Register"}
             </button>
           </div>
         </form>
