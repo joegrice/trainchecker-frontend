@@ -23,7 +23,7 @@ export default function LoginPage() {
 
       if (response.ok) {
         const data = await response.json();
-        login(data.token);
+        login(data.token, email);
         navigate("/");
       } else {
         setError("Invalid email or password");
