@@ -104,7 +104,7 @@ export default function MainApp() {
                 <Button
                   variant="text"
                   color="blue-gray"
-                  className="flex items-center gap-x-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
+                  className="flex items-center gap-x-1 py-2 pr-2 pl-2 lg:ml-auto"
                 >
                   <UserCircleIcon className="h-5 w-5" />
                   <Typography
@@ -142,14 +142,14 @@ export default function MainApp() {
               label="Origin Code"
               value={originCode}
               onChange={(e) => setOriginCode(e.target.value)}
-              placeholder="e.g., KGX"
+              placeholder="e.g. KGX"
               crossOrigin={null}
             />
             <Input
               label="Destination Code"
               value={destinationCode}
               onChange={(e) => setDestinationCode(e.target.value)}
-              placeholder="e.g., EDB"
+              placeholder="e.g. EDB"
               crossOrigin={null}
             />
             <Button

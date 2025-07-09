@@ -6,6 +6,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // New loading state
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -15,6 +16,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUserEmail(storedEmail);
       setIsAuthenticated(true);
     }
+    setIsLoading(false); // Set loading to false after checking localStorage
   }, []);
 
   const login = (newToken: string, email: string) => {
@@ -34,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, login, logout, userEmail }}>
+    <AuthContext.Provider value={{ isAuthenticated, token, login, logout, userEmail, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
